@@ -71,21 +71,23 @@ function color( iter ) {
     switch( iter )
     {
         case 0:
-            return "#FF0000";
+            return "#000000";
         case 1:
-            return "#FF3333";
+            return "#FF8F33";
         case 2:
-            return "#AA7777";
+            return "#CA77A3";
         case 3:
             return "#774444";
         case 4:
             return "#663333";
         case 5:
             return "#332222";
-        case 9999:
-            return "#0000FF";
+        case 6:
+            return "#6EA79B";
+        case 7:
+            return "#9A57B9";
         default:
-            return "#000000";
+            return "#FF0000";
     }
 }
 
@@ -108,7 +110,7 @@ function fillCanvas() {
 
     for( var i = 0; i < canvas.width; i++ )
     {
-        var value = Math.round( 1000 + 998 * ( i / canvas.width ));
+        var value = Math.round( 1000 + 8998 * ( i / canvas.width ));
         // don't use all one digit numbers
         if( !valid( value ) ) {
             ctx.fillStyle = "#00FF00";
@@ -118,6 +120,7 @@ function fillCanvas() {
         } else {
 
             var iters = kaprekar( value );
+            if( iters == 0 ) console.log( "odd val: " + value );
             if( iters == 9999 ) console.log( "bad val: " + value );
             ctx.fillStyle = color( iters );
             ctx.fillRect( i, 0, 1, canvas.height );
