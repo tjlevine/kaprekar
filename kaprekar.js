@@ -73,19 +73,19 @@ function color( iter ) {
         case 0:
             return "#000000";
         case 1:
-            return "#FF8F33";
+            return "#99FF00";
         case 2:
-            return "#CA77A3";
+            return "#AAAA00";
         case 3:
-            return "#774444";
+            return "#990000";
         case 4:
-            return "#663333";
+            return "#DD3355";
         case 5:
-            return "#332222";
+            return "#88CCCC";
         case 6:
-            return "#6EA79B";
+            return "#CC00CC";
         case 7:
-            return "#9A57B9";
+            return "#FF6600";
         default:
             return "#FF0000";
     }
