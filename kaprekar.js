@@ -54,6 +54,12 @@ function splitDigits( x ) {
         x = Math.floor( x / 10 );
     }
 
+    // assure the number length is 4
+    // and fill with leading zeros
+    // if necessary
+    while( digits.length < 4 )
+        digits.push( 0 );
+
     return digits;
 }
 
@@ -105,8 +111,8 @@ function fillCanvas() {
         var value = Math.round( 1000 + 998 * ( i / canvas.width ));
         // don't use all one digit numbers
         if( !valid( value ) ) {
-            //ctx.fillStyle = "#0000FF";
-            //ctx.fillRect( i, 0, 1, canvas.height );
+            ctx.fillStyle = "#00FF00";
+            ctx.fillRect( i, 0, 1, canvas.height );
 
             continue;
         } else {
