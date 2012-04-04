@@ -1,49 +1,39 @@
-
-var origNum = 4343;                                      
+var low = 1;
+var high = 1000;
 
 function kaprekar( origNum ) {
     var num = origNum;
-    log( "orig num = " + origNum );
+
     for( var iter = 0; num != 6174 && iter < 9999; iter++ )
     {
-        log( "iter = " + iter );
         // break the number down into digits
         var digits = splitDigits( num );
 
-        log( "digits = " + digits );
-
-        var origDigits = digits.slice(0);
+        var origDigits = digits.sort().slice(0);
 
         // sort the digits, first into ascending then reverse
-        digits.sort().reverse();
+        digits.reverse();
 
-        log( "digits (sorted) = " + digits );
-
-        // get the digits in decending order
+        // assemble the digits in decending order
+        // and use that as the big number
         var bigNum = 0;
-        var l = digits.length;
-        for( var i = 0; i < l; i++ )
+        for( var i = 0; i < 4; i++ )
         {
-            var addNum = digits.pop() * (Math.pow(10, i));
-            bigNum += addNum;
+            bigNum += digits.pop() * (Math.pow(10, i));
         }
 
-        // get the digits in ascending order
+        // assemble the digits in ascending order
+        // and use that as the small number
         var smallNum = 0;
-        digits = origDigits.sort();
-        for( var i = 0; i < l; i++ )
+        for( var i = 0; i < 4; i++ )
         {
-            var addNum = digits.pop() * (Math.pow( 10, i ));
-            smallNum += addNum;
+            smallNum += origDigits.pop() * (Math.pow( 10, i ));
         }
 
-        var newNum = bigNum - smallNum;
-        num = newNum;
-
+        num = bigNum - smallNum;
     }
     return iter;
 }
-log( "ITERS = " + kaprekar( origNum ) );
 
 function splitDigits( x ) {
 
@@ -63,29 +53,25 @@ function splitDigits( x ) {
     return digits;
 }
 
-function frac( cur, low, high ) {
-    return (cur / (high - low));
-}
-
 function color( iter ) {
     switch( iter )
     {
         case 0:
             return "#000000";
         case 1:
-            return "#99FF00";
+            return "#00FF00";
         case 2:
-            return "#AAAA00";
+            return "#00DD00";
         case 3:
-            return "#990000";
+            return "#00BB00";
         case 4:
-            return "#DD3355";
+            return "#009900";
         case 5:
-            return "#88CCCC";
+            return "#007700";
         case 6:
-            return "#CC00CC";
+            return "#005500";
         case 7:
-            return "#FF6600";
+            return "#003300";
         default:
             return "#FF0000";
     }
@@ -110,7 +96,7 @@ function fillCanvas() {
 
     for( var i = 0; i < canvas.width; i++ )
     {
-        var value = Math.round( 1000 + 8998 * ( i / canvas.width ));
+        var value = Math.round( low + high * ( i / canvas.width ));
         // don't use all one digit numbers
         if( !valid( value ) ) {
             ctx.fillStyle = "#00FF00";
@@ -120,7 +106,6 @@ function fillCanvas() {
         } else {
 
             var iters = kaprekar( value );
-            if( iters == 0 ) console.log( "odd val: " + value );
             if( iters == 9999 ) console.log( "bad val: " + value );
             ctx.fillStyle = color( iters );
             ctx.fillRect( i, 0, 1, canvas.height );
@@ -132,4 +117,15 @@ function log( x ) {
     document.write( x + "<br/>" );
 }
 
-window.onload = fillCanvas;
+window.onload = function() {
+    fillCanvas();
+    var canvas = document.getElementById( "kaprekar" );
+    var mouseHandler = function( event ) {
+        var span = document.getElementById( "coords" );
+        var newX = event.x - canvas.offsetLeft;
+        var rangeX = low + Math.round(high * ( newX / canvas.width ));
+        span.innerHTML = "number = " + rangeX + "<br/>";
+        span.innerHTML += "iterations = " + kaprekar( rangeX );
+    }
+    canvas.addEventListener( "mousemove", mouseHandler, false );
+}
